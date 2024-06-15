@@ -1,0 +1,34 @@
+:root {
+    --sg-margin-t: 15px;
+    --sg-color-border: black;
+    --sg-padding-1: 10px;
+    --sg-border-r: 10px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+h1 {
+    text-align: center;
+    margin-top: var(--sg-margin-t);
+}
+
+body {
+    width: 100%;
+}
+
+#sg-cont {
+    margin: var(--sg-margin-t) auto;
+    width: 80%;
+    padding: var(--sg-padding-1);
+    border: 2px dotted var(--sg-color-border);
+    border-radius: var(--sg-border-r);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
