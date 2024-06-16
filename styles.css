@@ -2,10 +2,12 @@
     --sg-margin-t-1: 15px;
     --sg-margin-t-2: 25px;
     --sg-color-border: black;
+    --sg-color-result: grey;
     --sg-padding-1: 10px;
     --sg-border-r: 10px;
     --sg-column-gap: 15px;
     --sg-row-gap: 15px;
+    --sg-font-size-1: 1rem;
 }
 
 * {
@@ -103,6 +105,8 @@ body {
 #sg-regular-board {
     margin: var(--sg-margin-t-2) auto var(--sg-margin-t-1) auto;
     text-align: center;
+    font-size: var(--sg-font-size-1);
+    color: var(--sg-color-result);
 }
 
 @media only screen and (max-width: 900px) {
