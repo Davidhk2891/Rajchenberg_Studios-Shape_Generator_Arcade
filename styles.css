@@ -102,6 +102,7 @@ body {
 
 #sg-regular-board {
     margin: var(--sg-margin-t-2) auto var(--sg-margin-t-1) auto;
+    text-align: center;
 }
 
 @media only screen and (max-width: 900px) {
