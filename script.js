@@ -13,11 +13,11 @@ const sgGameBoard = document.querySelector('#sg-game-board');
 
 let count = 10;
 let rows = [];
-let color = "grey";
 let flip = false;
 let char = "#";
 let charSize = ""
 let result = "";
+let color = "";
 let shape = "pyramid";
 const space = " ";
 
@@ -31,12 +31,8 @@ function makeRow(rowNum) {
         case "square":
             selectedShape = char.repeat(count * 2);
             break;
-        case "diamond":
-            selectedShape = function makeDiamond() {
-                let halfedCount = Math.floor(count / 2);
-                let diamond = space.repeat(count - rowNum) 
-                + char.repeat(rowNum) + space.repeat(count - rowNum);
-            }
+        case "line":
+            selectedShape = space.repeat(count / 2) + char + space.repeat(count / 2);
             break;
     }
     return selectedShape;
@@ -83,10 +79,22 @@ function clear() {
 
 function reset() {
 
-}
+    clear();
 
-function play() {
-
+    // Regular program
+    flip = false;
+    sgFlip.checked = false;
+    char = "#"
+    sgChar.value = "#";
+    charSize = "12";
+    sgCharSize.value = 12;
+    count = 10;
+    sgNumRows.value = 10;
+    shape = "pyramid";
+    sgShape.value = "pyramid";
+    color = "grey";
+    sgColor.value = "grey";
+    sgRegularBoard.style.color = color;
 }
 
 // Click event listeners
@@ -126,3 +134,9 @@ sgShape.addEventListener('change', function(e) {
     shape = e.target.value;
     printShapeForFeature();
 });
+
+sgColor.addEventListener('change', function(e) {
+    
+    sgRegularBoard.style.color = e.target.value;
+    printShapeForFeature()
+    });
