@@ -1,23 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
-
+    
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Shape Generator 15 - The game</title>
         <link rel="stylesheet" href="./styles.css" />
+        <script src="./game_script.js" defer></script>
         <script src="./script.js" defer></script>
+        <title>Shape Generator 15 - The game</title>
     </head>
 
     <body>
         <h1>Shape Generator 15 - The Game</h1>
-        <div id="sg-cont">`
+        <div id="sg-cont">
             <div id="sg-hud">
                 <div id="sg-hud-row-one" class="sg-hud-rows">
-                    
+                    <div id="sg-hud-row-one-inner-one" class="sg-hud-rows inner-rows">
+                        <div id="sg-flip-cont" class="sg-feature-cont">
+                            <label id="sg-flip-l" for="sg-flip">
+                                <input type="checkbox" id="sg-flip" />
+                                 Flip
+                            </label>                    
+                        </div>
+                        <div id="sg-char-cont" class="sg-feature-cont">
+                            <label id="sg-char-l" for="sg-char">
+                                <select id="sg-char" value="#">
+                                    <option value="§">§</option>
+                                    <option value="±">±</option>
+                                    <option value="!">!</option>
+                                    <option value="@">@</option>
+                                    <option value="#" selected>#</option>
+                                    <option value="$">$</option>
+                                    <option value="%">%</option>
+                                    <option value="^">^</option>
+                                    <option value="&">&</option>
+                                    <option value="*">*</option>
+                                    <option value="-">-</option>
+                                    <option value="=">=</option>
+                                    <option value="+">+</option>
+                                    <option value="~">~</option>
+                                    <option value=">">></option>
+                                </select>
+                                 Char
+                            </label>
+                        </div>
+                        <div id="sg-char-size-cont" class="sg-feature-cont">
+                            <label id="sg-char-size-l" for="sg-char-size">
+                                <input type="number" min="4" max="34" value="12" 
+                                id="sg-char-size" class="input-num"/>
+                                 Char size
+                            </label>
+                        </div>
+                    </div>
+                    <div id="sg-hud-row-one-inner-two" class="sg-hud-rows inner-rows">
+                        <div id="sg-num-rows-cont" class="sg-feature-cont">
+                            <label id="sg-num-rows-l" for="sg-num-rows">
+                                <input type="number" min="3" max="30" value="10"
+                                 id="sg-num-rows" class="input-num"/>
+                                 # Rows
+                            </label>                                
+                        </div>        
+                        <div id="sg-shape-cont" class="sg=feature-cont">
+                            <label id="sg-shape-l" for="sg-shape">
+                                <select id="sg-shape" value="pyrmaid">
+                                    <option value="pyramid">Pyramid</option>
+                                    <option value="square">Square</option>
+                                    <option value="line">Line</option>
+                                </select>
+                                Shape
+                            </label>
+                        </div>
+                        <div id="sg-color-cont" class="sg=feature-cont">
+                            <label id="sg-color-l" for="sg-color">
+                                <select id="sg-color" value="grey">
+                                    <option value="grey">Grey</option>
+                                    <option value="black">Black</option>
+                                    <option value="red">Red</option>
+                                    <option value="green">Green</option>
+                                    <option value="purple">Purple</option>
+                                    <option value="orange">Orange</option>
+                                    <option value="pink">Pink</option>
+                                </select>
+                                Color
+                            </label>
+                        </div>                    
+                    </div>
                 </div>
                 <div id="sg-hud-row-two" class="sg-hud-rows">
-
+                    <button id="sg-generate" class="btns">Generate</button>
+                    <button id="sg-clear" class="btns">Clear</button>
+                    <button id="sg-reset" class="btns">Reset</button>
+                    <button id="sg-play" class="btns">Play</button>
                 </div>
             </div>
             <p id="sg-regular-board">Click on 'Generate' or 'Play' &#128526;</p>
