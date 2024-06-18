@@ -10,27 +10,16 @@ const sgReset = document.querySelector('#sg-reset');
 const sgPlay =  document.querySelector('#sg-play');
 const sgRegularBoard = document.querySelector('#sg-regular-board');
 
-const sgGameBoardCont = document.querySelector('#sg-game-board-cont');
-const sgGameBoardTimerPointsCont = document.querySelector('#sg-game-board-timer-points-cont');
-const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-cont');
-let sgBoardContentCheckBtn;
-
-// Regular program
 let count = 10;
 let rows = [];
 let flip = false;
 let flipDir = "straight";
 let char = "#";
 let charSize = "12px";
-let result = "";
 let color = "grey";
 let shape = "pyramid";
+let result = "";
 const space = " ";
-
-// Game program
-let randomInsString;
-let randomInsArr;
-let currentInstruction;
 
 function makeRow(rowNum) {
 
@@ -120,41 +109,59 @@ sgFlip.addEventListener('change', function(e) {
     if (e.target.checked) {
         flip = true;
         flipDir = "fliped";
+        gameFlip = true;
+        gameFlipDir = "fliped";
     } else {
         flip = false;
         flip = "straight";
+        gameFlip = false;
+        gameFlipDir = "straight";
     }
-    printShapeForFeature();
+    
+    if (!isGameOn)
+        printShapeForFeature();
 });
 
 sgChar.addEventListener('change', function(e) {
 
     char = e.target.value;
-    printShapeForFeature();
+    gameChar = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
 });
 
 sgCharSize.addEventListener('change', function (e) {
     
     charSize = e.target.value + "px";
-    sgRegularBoard.style.fontSize = charSize;    
-    printShapeForFeature();
+    sgRegularBoard.style.fontSize = charSize;  
+    
+    gameCharSize = e.target.value + "px";
+    if (!isGameOn)
+        printShapeForFeature();
 }); 
 
 sgNumRows.addEventListener('change', function(e) {
 
     count = e.target.value;
-    printShapeForFeature();
+    gameCount = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
 });
 
 sgShape.addEventListener('change', function(e) {
 
     shape = e.target.value;
-    printShapeForFeature();
+    gameShape = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
 });
 
 sgColor.addEventListener('change', function(e) {
     
     color = e.target.value;
     sgRegularBoard.style.color = color;
-    printShapeForFeature()
+
+    gameColor = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
 });

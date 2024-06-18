@@ -1,11 +1,81 @@
+const sgGameBoardCont = document.querySelector('#sg-game-board-cont');
+const sgGameBoardTimerPointsCont = document.querySelector('#sg-game-board-timer-points-cont');
+const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-cont');
+let sgBoardContentCheckBtn;
+let sgInstructionSample;
+
+let isGameOn = false;
+let randomInsString;
+let randomInsArr;
+let currentInstruction;
+let gameFlip;
+let gameFlipDir = "";
+let gameChar = "";
+let gameCharSize = "";
+let gameColor = "";
+let gameCount = "";
+let gameShape = "";
+let gameResult = "";
+let gameRows = [];
+const gameSpace = " ";
+
+function makeGameRow(rowNum) {
+
+    let selectedShape;
+    switch (gameShape) {
+        case "pyramid":
+            selectedShape = gameSpace.repeat(gameCount - rowNum) + gameChar.repeat(rowNum) + gameSpace.repeat(gameCount - rowNum);
+            break;
+        case "square":
+            selectedShape = gameChar.repeat(gameCount * 2);
+            break;
+        case "line":
+            selectedShape = gameSpace.repeat(gameCount / 2) + gameChar + gameSpace.repeat(gameCount / 2);
+            break;
+    }
+    return selectedShape;
+}
+
+function fillGameShape() {
+    
+    for (let i = 1; i <= gameCount; i ++) {
+        if (!gameFlip)
+            gameRows.push(makeGameRow(i));
+        else
+            gameRows.unshift(makeGameRow(i));
+    }
+    return gameRows;
+}
+
+function stackGameShape() {
+
+    clearGameShape();
+    for (const row of fillGameShape()) {
+        gameResult += "\n" + row;
+    }
+
+    return gameResult;
+}
+
+function clearGameShape() {
+    gameResult = "";
+    gameRows.length = 0;
+}
+
+function hideRegularBoard() {
+    sgRegularBoard.style.display = "none";
+}
+
+function showGameBoard() {
+    sgGameBoardCont.style.display = "block";
+}
+
 function buildInstruction() {
     const flipArr = ["fliped", "straight"];
     const charArr = ["§", "±", "!", "@", "#", "$", "%", "^", "&", "*", "-", "=", "+", "~", ">"];
     const charSizeArr = ["4px", "5px","6px","7px","8px","9px","10px","11px","12px","13px","14px","15px"
-        ,"16px","17px","18px","19px","20px","21px","22px","23px","24px","25px","26px","27px","28px"
-        ,"29px","30px","31px","32px","33px","34px"];
-    const numRowsArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 
-        23, 24, 25, 26, 27, 28, 29, 30];    
+        ,"16px","17px","18px","19px","20px","21px","22px"];
+    const numRowsArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];    
     const shapeArr = ["pyramid", "square", "line"];
     const colorArr = ["grey", "black", "red", "green", "purple", "orange", "pink"];
 
@@ -19,12 +89,20 @@ function buildInstruction() {
     currentInstruction = `${randomFlip} ${randomNumRows} ${randomColor} ${randomShape} ${randomChar} ${randomCharSize}`.split(" ");
 }
 
-function hideRegularBoard() {
-    sgRegularBoard.style.display = "none";
-}
+function buildInstructionSample() {
 
-function showGameBoard() {
-    sgGameBoardCont.style.display = "block";
+    gameFlip = currentInstruction[0] == "fliped" ? true : false;
+    gameFlipDir = currentInstruction[0];
+
+    gameCount = currentInstruction[1];
+
+    gameColor = currentInstruction[2];
+
+    gameShape = currentInstruction[3];
+
+    gameChar = currentInstruction[4];
+
+    gameCharSize = currentInstruction[5];
 }
 
 function drawBoardTimerAndPoints() {
@@ -76,11 +154,6 @@ function drawBoardTimerAndPoints() {
     `
 }
 
-// Fliped 23-row blue line made of % of size 10
-
-// randomInsArr = `${randomFlip} ${randomNumRows} ${randomColor} ${randomShape}
-// ${randomChar} ${randomCharSize}`.split(" ");
-
 function drawBoardContent(instruction) {
 
     let currentInstruction = "Make a " + instruction[0] + ", " + instruction[1] + "-row, " +
@@ -112,13 +185,20 @@ function drawBoardContent(instruction) {
                             align-items: center;">
 
                             <p 
-                            id="sg-instruction"
-                            style="
-                                font-size: 0.7rem;
-                                text-align: center;
-                                padding: 6px;">
+                                id="sg-instruction"
+                                style="
+                                    font-size: 0.7rem;
+                                    text-align: center;
+                                    padding: 6px;">
                                 
-                                ${currentInstruction}
+                                        ${currentInstruction}
+                            </p>
+
+                            <p
+                                id="sg-instruction-sample"
+                                style="
+                                    font-size: ${instruction[5]};
+                                    text-align: center;">                            
                             </p>
 
                             <button 
@@ -140,7 +220,11 @@ function drawBoardContent(instruction) {
                             width: 100%;
                             height: 100%;
                             border: 1px dotted black;
-                            border-radius: 10px;">
+                            border-radius: 10px;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-evenly;
+                            align-items: center;">
 
 
 
@@ -150,16 +234,25 @@ function drawBoardContent(instruction) {
         </div>`
 }
 
+function drawFreshInstruction() {
+    sgGameBoardContentCont.innerHTML = drawBoardContent(currentInstruction);
+}
+
+function drawFreshInstructionSample() {
+    testInput(stackGameShape());
+    sgInstructionSample.innerHTML = "Hello World!";
+}
+
+function drawFreshTimerAndPoints() {
+    sgGameBoardTimerPointsCont.innerHTML = drawBoardTimerAndPoints();
+}
+
 function loadJSGeneratedHTMLRes() {
     sgBoardContentCheckBtn = document.getElementById('#sg-check');
+    sgInstructionSample = document.getElementById('#sg-instruction-sample');
 } 
 
 function compareInput() {
-
-    /* 
-    randomInsString = `${randomFlip} ${randomNumRows}-row ${randomColor}
-     ${randomShape} made of ${randomChar} of size ${randomCharSize}`;
-    */
    
    if (flipDir == currentInstruction[0] && count == currentInstruction[1]
     && color == currentInstruction[2] && shape == currentInstruction[3]
@@ -190,12 +283,20 @@ function compareInput() {
 
 function checkRound() {
     compareInput();
+    buildInstruction();
+    buildInstructionSample();
+    drawFreshInstruction();
+    drawFreshInstructionSample();
 }
 
 function play() {
 
+    isGameOn = true;
+
     buildInstruction();
-    sgGameBoardTimerPointsCont.innerHTML = drawBoardTimerAndPoints();
-    sgGameBoardContentCont.innerHTML = drawBoardContent(currentInstruction);
+    buildInstructionSample();
+    drawFreshTimerAndPoints();
+    drawFreshInstruction();
     loadJSGeneratedHTMLRes();
+    drawFreshInstructionSample();
 }
