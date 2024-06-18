@@ -9,22 +9,28 @@ const sgClear = document.querySelector('#sg-clear');
 const sgReset = document.querySelector('#sg-reset');
 const sgPlay =  document.querySelector('#sg-play');
 const sgRegularBoard = document.querySelector('#sg-regular-board');
-const sgGameBoard = document.querySelector('#sg-game-board');
+
+const sgGameBoardCont = document.querySelector('#sg-game-board-cont');
+const sgGameBoardTimerPointsCont = document.querySelector('#sg-game-board-timer-points-cont');
+const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-cont');
+let sgBoardContentCheckBtn;
 
 // Regular program
 let count = 10;
 let rows = [];
 let flip = false;
+let flipDir = "straight";
 let char = "#";
-let charSize = ""
+let charSize = "12px";
 let result = "";
-let color = "";
+let color = "grey";
 let shape = "pyramid";
 const space = " ";
 
 // Game program
 let randomInsString;
 let randomInsArr;
+let currentInstruction;
 
 function makeRow(rowNum) {
 
@@ -91,7 +97,7 @@ function reset() {
     sgFlip.checked = false;
     char = "#"
     sgChar.value = "#";
-    charSize = "12";
+    charSize = "12px";
     sgCharSize.value = 12;
     count = 10;
     sgNumRows.value = 10;
@@ -111,7 +117,13 @@ sgPlay.onclick = play;
 // Other event listeners
 sgFlip.addEventListener('change', function(e) {
 
-    flip = e.target.checked ? true : false;
+    if (e.target.checked) {
+        flip = true;
+        flipDir = "fliped";
+    } else {
+        flip = false;
+        flip = "straight";
+    }
     printShapeForFeature();
 });
 
@@ -123,8 +135,8 @@ sgChar.addEventListener('change', function(e) {
 
 sgCharSize.addEventListener('change', function (e) {
     
-    charSize = e.target.value;
-    sgRegularBoard.style.fontSize = charSize + "px";    
+    charSize = e.target.value + "px";
+    sgRegularBoard.style.fontSize = charSize;    
     printShapeForFeature();
 }); 
 
@@ -142,6 +154,7 @@ sgShape.addEventListener('change', function(e) {
 
 sgColor.addEventListener('change', function(e) {
     
-    sgRegularBoard.style.color = e.target.value;
+    color = e.target.value;
+    sgRegularBoard.style.color = color;
     printShapeForFeature()
-    });
+});

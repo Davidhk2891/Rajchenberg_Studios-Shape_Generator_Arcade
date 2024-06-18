@@ -109,6 +109,11 @@ body {
     color: var(--sg-color-result);
 }
 
+/* Game */
+#sg-check:hover {
+    cursor: pointer;
+}
+
 @media only screen and (max-width: 900px) {
 
     h1 {

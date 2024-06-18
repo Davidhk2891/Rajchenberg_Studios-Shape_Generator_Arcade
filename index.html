@@ -64,7 +64,7 @@
                         <div id="sg-shape-cont" class="sg=feature-cont">
                             <label id="sg-shape-l" for="sg-shape">
                                 <select id="sg-shape" value="pyrmaid">
-                                    <option value="pyramid">Pyramid</option>
+                                    <option value="pyramid" selected>Pyramid</option>
                                     <option value="square">Square</option>
                                     <option value="line">Line</option>
                                 </select>
@@ -74,7 +74,7 @@
                         <div id="sg-color-cont" class="sg=feature-cont">
                             <label id="sg-color-l" for="sg-color">
                                 <select id="sg-color" value="grey">
-                                    <option value="grey">Grey</option>
+                                    <option value="grey" selected>Grey</option>
                                     <option value="black">Black</option>
                                     <option value="red">Red</option>
                                     <option value="green">Green</option>
@@ -95,7 +95,10 @@
                 </div>
             </div>
             <p id="sg-regular-board">Click on 'Generate' or 'Play' &#128526;</p>
-            <p id="sg-game-board" style="display: none;"></p>
+            <div id="sg-game-board-cont" style="display: none;">
+                <div id="sg-game-board-timer-points-cont"></div>
+                <div id="sg-game-board-content-cont"></div>
+            </div>
         </div>
     </body>
 
