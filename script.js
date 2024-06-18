@@ -11,6 +11,7 @@ const sgPlay =  document.querySelector('#sg-play');
 const sgRegularBoard = document.querySelector('#sg-regular-board');
 const sgGameBoard = document.querySelector('#sg-game-board');
 
+// Regular program
 let count = 10;
 let rows = [];
 let flip = false;
@@ -20,6 +21,10 @@ let result = "";
 let color = "";
 let shape = "pyramid";
 const space = " ";
+
+// Game program
+let randomInsString;
+let randomInsArr;
 
 function makeRow(rowNum) {
 
