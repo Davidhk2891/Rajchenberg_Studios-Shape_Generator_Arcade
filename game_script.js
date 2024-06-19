@@ -18,6 +18,12 @@ let gameShape = "";
 let gameResult = "";
 let gameRows = [];
 const gameSpace = " ";
+const flipArr = ["fliped", "straight"];
+const charArr = ["§", "±", "!", "@", "#", "$", "%", "^", "&", "*", "-", "=", "+", "~", ">"];
+const charSizeArr = ["4px", "5px","6px","7px","8px","9px","10px","11px","12px","13px","14px","15px","16px"];
+const numRowsArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];    
+const shapeArr = ["pyramid", "square", "line"];
+const colorArr = ["grey", "black", "red", "green", "purple", "orange", "pink"];
 
 function makeGameRow(rowNum) {
 
@@ -47,11 +53,11 @@ function fillGameShape() {
     return gameRows;
 }
 
-function stackGameShape() {
+function stackGameShape(lineBreakType) {
 
     clearGameShape();
     for (const row of fillGameShape()) {
-        gameResult += "\n" + row;
+        gameResult = gameResult + lineBreakType + row;
     }
 
     return gameResult;
@@ -60,6 +66,7 @@ function stackGameShape() {
 function clearGameShape() {
     gameResult = "";
     gameRows.length = 0;
+    sgInstructionSample.innerHTML = "";
 }
 
 function hideRegularBoard() {
@@ -71,13 +78,6 @@ function showGameBoard() {
 }
 
 function buildInstruction() {
-    const flipArr = ["fliped", "straight"];
-    const charArr = ["§", "±", "!", "@", "#", "$", "%", "^", "&", "*", "-", "=", "+", "~", ">"];
-    const charSizeArr = ["4px", "5px","6px","7px","8px","9px","10px","11px","12px","13px","14px","15px"
-        ,"16px","17px","18px","19px","20px","21px","22px"];
-    const numRowsArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];    
-    const shapeArr = ["pyramid", "square", "line"];
-    const colorArr = ["grey", "black", "red", "green", "purple", "orange", "pink"];
 
     const randomFlip = flipArr[Math.floor(Math.random() * flipArr.length)];
     const randomChar = charArr[Math.floor(Math.random() * charArr.length)];
@@ -198,6 +198,12 @@ function drawBoardContent(instruction) {
                                 id="sg-instruction-sample"
                                 style="
                                     font-size: ${instruction[5]};
+                                    color: ${instruction[2]};                                    
+                                    margin: 0 auto;
+                                    height: 200px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
                                     text-align: center;">                            
                             </p>
 
@@ -239,8 +245,8 @@ function drawFreshInstruction() {
 }
 
 function drawFreshInstructionSample() {
-    testInput(stackGameShape());
-    sgInstructionSample.innerHTML = "Hello World!";
+    testInput(stackGameShape("\n"));
+    sgInstructionSample.innerHTML = stackGameShape("<br>");
 }
 
 function drawFreshTimerAndPoints() {
@@ -248,8 +254,8 @@ function drawFreshTimerAndPoints() {
 }
 
 function loadJSGeneratedHTMLRes() {
-    sgBoardContentCheckBtn = document.getElementById('#sg-check');
-    sgInstructionSample = document.getElementById('#sg-instruction-sample');
+    sgBoardContentCheckBtn = document.getElementById('sg-check');
+    sgInstructionSample = document.getElementById('sg-instruction-sample');
 } 
 
 function compareInput() {
@@ -258,8 +264,8 @@ function compareInput() {
     && color == currentInstruction[2] && shape == currentInstruction[3]
     && char == currentInstruction[4] && charSize == currentInstruction[5]) {
 
-        testInput("Corrrect");
         testInput(
+            "Correct" + "\n" +
             flipDir + " and " + currentInstruction[0] + "\n" +
             count + " and " + currentInstruction[1] + "\n" +
             color + " and " + currentInstruction[2] + "\n" +
@@ -269,8 +275,8 @@ function compareInput() {
         );
    } else {
 
-        testInput("Incorrect");
         testInput(
+            "Incorrect" + "\n" +
             flipDir + " and " + currentInstruction[0] + "\n" +
             count + " and " + currentInstruction[1] + "\n" +
             color + " and " + currentInstruction[2] + "\n" +
@@ -283,9 +289,14 @@ function compareInput() {
 
 function checkRound() {
     compareInput();
+
     buildInstruction();
     buildInstructionSample();
+
+    drawFreshTimerAndPoints();
+
     drawFreshInstruction();
+    loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
 }
 
@@ -295,7 +306,9 @@ function play() {
 
     buildInstruction();
     buildInstructionSample();
+
     drawFreshTimerAndPoints();
+
     drawFreshInstruction();
     loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
