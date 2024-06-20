@@ -223,8 +223,8 @@ function drawResultCheck() {
 
     const checkedResult = () => {
         sgResultChecker.innerText = roundWon ?
-        `CORRECT ${String.fromCodePoint(0x2705)}` :
-        `INCORRECT ${String.fromCodePoint(0x274C)}`;
+        `CORRECT ${String.fromCodePoint(0x2705)} +4 time | +10 points` :
+        `INCORRECT ${String.fromCodePoint(0x274C)} -1 time | -5 points`;
     }
 
     setTimeout(checkedResult, 500);
@@ -250,6 +250,7 @@ function clearGameBoard() {
 
     clearPlayerShape();
     clearResultCheck();
+    sgResultChecker.innerText = "-";
 }
 
 function drawFreshTimerAndPoints() {
