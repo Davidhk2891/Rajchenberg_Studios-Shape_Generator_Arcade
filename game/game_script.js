@@ -7,131 +7,8 @@ let sgUserResult;
 let sgResultChecker;
 
 let isGameOn = false;
-let roundWon = false;
-let randomInsString;
-let randomInsArr;
-let currentInstruction;
-
-let gameFlip;
-let gameFlipDir = "";
-let gameChar = "";
-let gameCharSize = "";
-let gameColor = "";
-let gameCount = "";
-let gameShape = "";
-let gameResult = "";
-let gameRows = [];
-const gameSpace = " ";
-
-let playerFlip;
-let playerFlipDir = "";
-let playerChar = "";
-let playerCharSize = "";
-let playerColor = "";
-let playerShape = "";
-let playerResult = "";
-let playerRows = [];
-let playerSpace = " ";
-
-const flipArr = ["fliped", "straight"];
-const charArr = ["§", "±", "!", "@", "#", "$", "%", "^", "&", "*", "-", "=", "+", "~", ">"];
-const charSizeArr = ["4px", "5px","6px","7px","8px","9px","10px","11px","12px","13px","14px","15px","16px"];
-const numRowsArr = [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];    
-const shapeArr = ["pyramid", "square", "line"];
-const colorArr = ["grey", "black", "red", "green", "purple", "orange", "pink"];
-
-function makeGameRow(rowNum) {
-
-    let selectedShape;
-    switch (gameShape) {
-        case "pyramid":
-            selectedShape = gameSpace.repeat(gameCount - rowNum) + gameChar.repeat(rowNum) + gameSpace.repeat(gameCount - rowNum);
-            break;
-        case "square":
-            selectedShape = gameChar.repeat(gameCount * 2);
-            break;
-        case "line":
-            selectedShape = gameSpace.repeat(gameCount / 2) + gameChar + gameSpace.repeat(gameCount / 2);
-            break;
-    }
-    return selectedShape;
-}
-
-function fillGameShape() {
-    
-    for (let i = 1; i <= gameCount; i ++) {
-        if (!gameFlip)
-            gameRows.push(makeGameRow(i));
-        else
-            gameRows.unshift(makeGameRow(i));
-    }
-    return gameRows;
-}
-
-function stackGameShape(lineBreakType) {
-
-    clearGameShape();
-    for (const row of fillGameShape()) {
-        gameResult = gameResult + lineBreakType + row;
-    }
-
-    return gameResult;
-}
-
-function clearGameShape() {
-
-    gameResult = "";
-    gameRows.length = 0;
-    sgInstructionSample.innerHTML = "";
-}
-
-function clearAllShapeAssets() {
-
-    gameFlip = false;
-    gameFlipDir = "";
-
-    gameCount = 0;
-    gameColor = "";
-    gameShape = "";
-    gameChar = "";
-    gameCharSize = "";
-}
-
-function hideRegularBoard() {
-    sgRegularBoard.style.display = "none";
-}
-
-function showGameBoard() {
-    sgGameBoardCont.style.display = "block";
-}
-
-function buildInstruction() {
-
-    const randomFlip = flipArr[Math.floor(Math.random() * flipArr.length)];
-    const randomChar = charArr[Math.floor(Math.random() * charArr.length)];
-    const randomCharSize = charSizeArr[Math.floor(Math.random() * charSizeArr.length)];
-    const randomNumRows = numRowsArr[Math.floor(Math.random() * numRowsArr.length)];
-    const randomShape = shapeArr[Math.floor(Math.random() * shapeArr.length)];
-    const randomColor = colorArr[Math.floor(Math.random() * colorArr.length)];
-
-    currentInstruction = `${randomFlip} ${randomNumRows} ${randomColor} ${randomShape} ${randomChar} ${randomCharSize}`.split(" ");
-}
-
-function buildInstructionSample() {
-
-    gameFlip = currentInstruction[0] == "fliped" ? true : false;
-    gameFlipDir = currentInstruction[0];
-
-    gameCount = currentInstruction[1];
-
-    gameColor = currentInstruction[2];
-
-    gameShape = currentInstruction[3];
-
-    gameChar = currentInstruction[4];
-
-    gameCharSize = currentInstruction[5];
-}
+let computerPlayed = false;
+let playerPlayed = false;
 
 function drawBoardTimerAndPoints() {
     hideRegularBoard();
@@ -182,10 +59,7 @@ function drawBoardTimerAndPoints() {
     `
 }
 
-function drawBoardContent(instruction, uColor, uFont) {
-
-    let currentInstruction = "Make a " + instruction[0] + ", " + instruction[1] + "-row, " +
-    instruction[2] + " " + instruction[3] + " made of " + instruction[4] + " of size " + instruction[5];
+function drawBoardContent(uColor, uFont) {
 
     return `
         <div 
@@ -219,14 +93,14 @@ function drawBoardContent(instruction, uColor, uFont) {
                                     text-align: center;
                                     padding: 6px;">
                                 
-                                        ${currentInstruction}
+                                        ${formattedCurrentInstruction}
                             </p>
 
                             <p
                                 id="sg-instruction-sample"
                                 style="
-                                    font-size: ${instruction[5]};
-                                    color: ${instruction[2]};                                    
+                                    font-size: ${currentInstruction[5]};
+                                    color: ${currentInstruction[2]};                                    
                                     margin: 0 auto;
                                     height: 200px;
                                     display: flex;
@@ -300,17 +174,31 @@ function drawBoardContent(instruction, uColor, uFont) {
         </div>`
 }
 
+function loadJSGeneratedHTMLRes() {
+    sgBoardContentCheckBtn = document.getElementById('sg-check');
+    sgInstructionSample = document.getElementById('sg-instruction-sample');
+    sgUserResult = document.getElementById('sg-user-result');
+    sgResultChecker = document.getElementById('sg-result-checker');
+}
+
+function hideRegularBoard() {
+    sgRegularBoard.style.display = "none";
+}
+
+function showGameBoard() {
+    sgGameBoardCont.style.display = "block";
+}
+
 function drawFreshInstruction() {
     sgGameBoardContentCont.innerHTML = drawBoardContent(currentInstruction);
 }
 
 function drawFreshInstructionSample() {
-    sgInstructionSample.innerHTML = stackGameShape("<br>");
-    clearAllShapeAssets();
+    sgInstructionSample.innerHTML = stackComputerShape("<br>");
 }
 
 function drawUserResult() {
-    sgUserResult.innerText = stackGameShape("<br>");
+    sgUserResult.innerHTML = stackPlayerShape("<br>");
 }
 
 function drawResultCheck() {
@@ -321,68 +209,41 @@ function drawFreshTimerAndPoints() {
     sgGameBoardTimerPointsCont.innerHTML = drawBoardTimerAndPoints();
 }
 
-function loadJSGeneratedHTMLRes() {
-    sgBoardContentCheckBtn = document.getElementById('sg-check');
-    sgInstructionSample = document.getElementById('sg-instruction-sample');
-    sgUserResult = document.getElementById('sg-user-result');
-    sgResultChecker = document.getElementById('sg-result-checker');
-} 
-
-function compareInput() {
-   
-   if (flipDir == currentInstruction[0] && count == currentInstruction[1]
-    && color == currentInstruction[2] && shape == currentInstruction[3]
-    && char == currentInstruction[4] && charSize == currentInstruction[5]) {
-
-        testInput(
-            "Correct" + "\n" +
-            flipDir + " and " + currentInstruction[0] + "\n" +
-            count + " and " + currentInstruction[1] + "\n" +
-            color + " and " + currentInstruction[2] + "\n" +
-            shape + " and " + currentInstruction[3] + "\n" +
-            char + " and " + currentInstruction[4] + "\n" +
-            charSize + " and " + currentInstruction[5] + "\n"
-        );
-        roundWon = true;
-   } else {
-
-        testInput(
-            "Incorrect" + "\n" +
-            flipDir + " and " + currentInstruction[0] + "\n" +
-            count + " and " + currentInstruction[1] + "\n" +
-            color + " and " + currentInstruction[2] + "\n" +
-            shape + " and " + currentInstruction[3] + "\n" +
-            char + " and " + currentInstruction[4] + "\n" +
-            charSize + " and " + currentInstruction[5] + "\n"
-        );
-        roundWon = false;
-   }
-}
-
 function checkRound() {
-    compareInput();
 
-    buildInstruction();
-    buildInstructionSample();
+    //Draw user result
+    drawUserResult();
 
-    drawFreshTimerAndPoints();
+    // compareInput();
 
-    drawFreshInstruction();
-    loadJSGeneratedHTMLRes();
-    drawFreshInstructionSample();
+    // buildInstruction();
+    // buildComputerInstructionSample();
+
+    // drawFreshTimerAndPoints();
+
+    // drawFreshInstruction();
+    // loadJSGeneratedHTMLRes();
+    // drawFreshInstructionSample();
+
+    //
     // drawUserResult();
 }
 
 function play() {
 
+    // Game switches on
     isGameOn = true;
 
+    // Computer builds random instruction with its shape
     buildInstruction();
-    buildInstructionSample();
+    buildComputerInstructionSample();
 
+    // Game draws timer and points HUD
     drawFreshTimerAndPoints();
 
+    // Game draws computer's instruction and shape into board   
     drawFreshInstruction();
     loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
+    computerPlayed = true;
 }

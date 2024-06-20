@@ -10,8 +10,8 @@ const sgReset = document.querySelector('#sg-reset');
 const sgPlay =  document.querySelector('#sg-play');
 const sgRegularBoard = document.querySelector('#sg-regular-board');
 
-let count = 10;
 let rows = [];
+let count = 10;
 let flip = false;
 let flipDir = "straight";
 let char = "#";
@@ -109,25 +109,36 @@ sgFlip.addEventListener('change', function(e) {
     if (e.target.checked) {
         flip = true;
         flipDir = "fliped";
-        gameFlip = true;
-        gameFlipDir = "fliped";
+        computerFlip = true;
+        computerFlipDir = "fliped";
     } else {
         flip = false;
         flip = "straight";
-        gameFlip = false;
-        gameFlipDir = "straight";
+        computerFlip = false;
+        computerFlipDir = "straight";
     }
     
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed) {
+        if (e.target.checked) {
+            playerFlip = true;
+            playerFlipDir = "fliped";
+        } else {
+            playerFlip = false;
+            playerFlipDir = "straight";
+        }
+    }
 });
 
 sgChar.addEventListener('change', function(e) {
 
     char = e.target.value;
-    gameChar = e.target.value;
+    computerChar = e.target.value;
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed)
+        playerChar = e.target.value;
 });
 
 sgCharSize.addEventListener('change', function (e) {
@@ -135,25 +146,31 @@ sgCharSize.addEventListener('change', function (e) {
     charSize = e.target.value + "px";
     sgRegularBoard.style.fontSize = charSize;  
     
-    gameCharSize = e.target.value + "px";
+    computerCharSize = e.target.value + "px";
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed)
+        playerCharSize = e.target.value + "px";
 }); 
 
 sgNumRows.addEventListener('change', function(e) {
 
     count = e.target.value;
-    gameCount = e.target.value;
+    computerCount = e.target.value;
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed)
+        playerCount = e.target.value;
 });
 
 sgShape.addEventListener('change', function(e) {
 
     shape = e.target.value;
-    gameShape = e.target.value;
+    computerShape = e.target.value;
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed) 
+        playerShape = e.target.value;
 });
 
 sgColor.addEventListener('change', function(e) {
@@ -161,7 +178,9 @@ sgColor.addEventListener('change', function(e) {
     color = e.target.value;
     sgRegularBoard.style.color = color;
 
-    gameColor = e.target.value;
+    computerColor = e.target.value;
     if (!isGameOn)
         printShapeForFeature();
+    if (computerPlayed)
+        playerColor = e.target.value;
 });
