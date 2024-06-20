@@ -3,11 +3,15 @@ const sgGameBoardTimerPointsCont = document.querySelector('#sg-game-board-timer-
 const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-cont');
 let sgBoardContentCheckBtn;
 let sgInstructionSample;
+let sgUserResult;
+let sgResultChecker;
 
 let isGameOn = false;
+let roundWon = false;
 let randomInsString;
 let randomInsArr;
 let currentInstruction;
+
 let gameFlip;
 let gameFlipDir = "";
 let gameChar = "";
@@ -18,6 +22,17 @@ let gameShape = "";
 let gameResult = "";
 let gameRows = [];
 const gameSpace = " ";
+
+let playerFlip;
+let playerFlipDir = "";
+let playerChar = "";
+let playerCharSize = "";
+let playerColor = "";
+let playerShape = "";
+let playerResult = "";
+let playerRows = [];
+let playerSpace = " ";
+
 const flipArr = ["fliped", "straight"];
 const charArr = ["§", "±", "!", "@", "#", "$", "%", "^", "&", "*", "-", "=", "+", "~", ">"];
 const charSizeArr = ["4px", "5px","6px","7px","8px","9px","10px","11px","12px","13px","14px","15px","16px"];
@@ -53,7 +68,21 @@ function fillGameShape() {
     return gameRows;
 }
 
-function stackGameShape(lineBreakType) {
+function stackInstructionShape() {
+    clearGameShape();
+    for (const row of fillGameShape()) {
+        gameResult = gameResult + lineBreakType + row;
+    }
+}
+
+function stackPlayerShape() {
+    clearGameShape();
+    for (const row of fillGameShape()) {
+        gameResult = gameResult + lineBreakType + row;
+    }
+}
+
+function printGameShape(lineBreakType) {
 
     clearGameShape();
     for (const row of fillGameShape()) {
@@ -64,9 +93,22 @@ function stackGameShape(lineBreakType) {
 }
 
 function clearGameShape() {
+
     gameResult = "";
     gameRows.length = 0;
     sgInstructionSample.innerHTML = "";
+}
+
+function clearAllShapeAssets() {
+
+    gameFlip = false;
+    gameFlipDir = "";
+
+    gameCount = 0;
+    gameColor = "";
+    gameShape = "";
+    gameChar = "";
+    gameCharSize = "";
 }
 
 function hideRegularBoard() {
@@ -154,7 +196,7 @@ function drawBoardTimerAndPoints() {
     `
 }
 
-function drawBoardContent(instruction) {
+function drawBoardContent(instruction, uColor, uFont) {
 
     let currentInstruction = "Make a " + instruction[0] + ", " + instruction[1] + "-row, " +
     instruction[2] + " " + instruction[3] + " made of " + instruction[4] + " of size " + instruction[5];
@@ -232,7 +274,39 @@ function drawBoardContent(instruction) {
                             justify-content: space-evenly;
                             align-items: center;">
 
+                            <p 
+                                id="sg-dumb-instruction"
+                                style="
+                                    font-size: 0.7rem;
+                                    text-align: center;
+                                    padding: 6px;"
+                                    color: transparent;>
+                                
+                                        _
+                            </p>
 
+                            <p
+                                id="sg-user-result"
+                                style="
+                                    font-size: ${uFont};
+                                    color: ${uColor};                                    
+                                    margin: 0 auto;
+                                    height: 200px;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    text-align: center;">                            
+                            </p>
+
+                            <p 
+                                id="sg-result-checker"
+                                style="
+                                    border: 0;
+                                    padding: 10px;
+                                    margin-top: 15px;
+                                    width: 30%;
+                                    style: bold;">                                        
+                            </p>
 
                     </div>
 
@@ -245,8 +319,16 @@ function drawFreshInstruction() {
 }
 
 function drawFreshInstructionSample() {
-    testInput(stackGameShape("\n"));
-    sgInstructionSample.innerHTML = stackGameShape("<br>");
+    sgInstructionSample.innerHTML = printGameShape("<br>");
+    clearAllShapeAssets();
+}
+
+function drawUserResult() {
+    sgUserResult.innerText = printGameShape("<br>");
+}
+
+function drawResultCheck() {
+    sgResultChecker.innerText = roundWon ? "CORRECT" : "INCORRECT";
 }
 
 function drawFreshTimerAndPoints() {
@@ -256,6 +338,8 @@ function drawFreshTimerAndPoints() {
 function loadJSGeneratedHTMLRes() {
     sgBoardContentCheckBtn = document.getElementById('sg-check');
     sgInstructionSample = document.getElementById('sg-instruction-sample');
+    sgUserResult = document.getElementById('sg-user-result');
+    sgResultChecker = document.getElementById('sg-result-checker');
 } 
 
 function compareInput() {
@@ -273,6 +357,7 @@ function compareInput() {
             char + " and " + currentInstruction[4] + "\n" +
             charSize + " and " + currentInstruction[5] + "\n"
         );
+        roundWon = true;
    } else {
 
         testInput(
@@ -284,6 +369,7 @@ function compareInput() {
             char + " and " + currentInstruction[4] + "\n" +
             charSize + " and " + currentInstruction[5] + "\n"
         );
+        roundWon = false;
    }
 }
 
@@ -298,6 +384,7 @@ function checkRound() {
     drawFreshInstruction();
     loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
+    drawUserResult();
 }
 
 function play() {
