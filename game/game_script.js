@@ -2,18 +2,21 @@ const sgGameBoardCont = document.querySelector('#sg-game-board-cont');
 const sgGameBoardTimerPointsCont = document.querySelector('#sg-game-board-timer-points-cont');
 const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-cont');
 let sgBoardContentCheckBtn;
+let sgInstruction;
 let sgInstructionSample;
 let sgUserResult;
 let sgResultChecker;
+let sgPoints;
+let sgTimer;
 
 let isGameOn = false;
 let computerPlayed = false;
 let playerPlayed = false;
+let points = 0;
 
 function drawBoardTimerAndPoints() {
-    hideRegularBoard();
-    showGameBoard();
-    return `
+    
+    sgGameBoardTimerPointsCont.innerHTML = `
         <h2 style="
             margin-top: 15px; 
             text-align: center;
@@ -40,8 +43,8 @@ function drawBoardTimerAndPoints() {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;">
-                        <p id="timer-title">TIME</p>
-                        <p id="timer">00</p>
+                        <p id="sg-timer-title">TIME</p>
+                        <p id="sg-timer">00</p>
             </div>
 
             <div 
@@ -51,17 +54,17 @@ function drawBoardTimerAndPoints() {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;">
-                        <p id="points-title">POINTS</p>
-                        <p id="points">0</p>
+                        <p id="sg-points-title">POINTS</p>
+                        <p id="sg-points">0</p>
             </div>
 
         </div>
     `
 }
 
-function drawBoardContent(uColor, uFont) {
+function drawBoardContent() {
 
-    return `
+    sgGameBoardContentCont.innerHTML = `
         <div 
             id="sg-content-cont"
             style="
@@ -92,15 +95,11 @@ function drawBoardContent(uColor, uFont) {
                                     font-size: 0.7rem;
                                     text-align: center;
                                     padding: 6px;">
-                                
-                                        ${formattedCurrentInstruction}
                             </p>
 
                             <p
                                 id="sg-instruction-sample"
-                                style="
-                                    font-size: ${currentInstruction[5]};
-                                    color: ${currentInstruction[2]};                                    
+                                style="                                   
                                     margin: 0 auto;
                                     height: 200px;
                                     display: flex;
@@ -141,15 +140,12 @@ function drawBoardContent(uColor, uFont) {
                                     text-align: center;
                                     padding: 6px;"
                                     color: transparent;>
-                                
                                         _
                             </p>
 
                             <p
                                 id="sg-user-result"
-                                style="
-                                    font-size: ${uFont};
-                                    color: ${uColor};                                    
+                                style="                                                                  
                                     margin: 0 auto;
                                     height: 200px;
                                     display: flex;
@@ -165,7 +161,9 @@ function drawBoardContent(uColor, uFont) {
                                     padding: 10px;
                                     margin-top: 15px;
                                     width: 30%;
-                                    style: bold;">                                        
+                                    style: bold;
+                                    width: fit-content;">   
+                                        - 
                             </p>
 
                     </div>
@@ -174,11 +172,27 @@ function drawBoardContent(uColor, uFont) {
         </div>`
 }
 
+function gainPoints() {
+    return points + 10;
+}
+
+function losePoints() {
+    return points - 5;
+}
+
+function resetPoints() {
+    points = 0;
+    return points;
+}
+
 function loadJSGeneratedHTMLRes() {
     sgBoardContentCheckBtn = document.getElementById('sg-check');
     sgInstructionSample = document.getElementById('sg-instruction-sample');
     sgUserResult = document.getElementById('sg-user-result');
     sgResultChecker = document.getElementById('sg-result-checker');
+    sgTimer = document.getElementById('sg-timer');
+    sgPoints = document.getElementById('sg-points');
+    sgInstruction = document.getElementById('sg-instruction');
 }
 
 function hideRegularBoard() {
@@ -190,23 +204,66 @@ function showGameBoard() {
 }
 
 function drawFreshInstruction() {
-    sgGameBoardContentCont.innerHTML = drawBoardContent(currentInstruction);
+    sgInstruction.innerHTML = formattedCurrentInstruction;
 }
 
 function drawFreshInstructionSample() {
     sgInstructionSample.innerHTML = stackComputerShape("<br>");
+    sgInstructionSample.style.color = computerColor;
+    sgInstructionSample.style.fontSize = computerCharSize;
 }
 
 function drawUserResult() {
     sgUserResult.innerHTML = stackPlayerShape("<br>");
+    sgUserResult.style.color = playerColor;
+    sgUserResult.style.fontSize = playerCharSize;
 }
 
 function drawResultCheck() {
-    sgResultChecker.innerText = roundWon ? "CORRECT" : "INCORRECT";
+
+    const checkedResult = () => {
+        sgResultChecker.innerText = roundWon ?
+        `CORRECT ${String.fromCodePoint(0x2705)}` :
+        `INCORRECT ${String.fromCodePoint(0x274C)}`;
+    }
+
+    setTimeout(checkedResult, 500);
+}
+
+function resetSgHUD() {
+
+    sgFlip.checked = false;
+    sgChar.value = "#";
+    sgCharSize.value = 12;
+    sgNumRows.value = 10;
+    sgShape.value = "pyramid";
+    sgColor.value = "grey";
+}
+
+function clearResultCheck() {
+    sgResultChecker.innerText = "";
+}
+
+function clearGameBoard() {
+
+    clearComputerShape();
+
+    clearPlayerShape();
+    clearResultCheck();
 }
 
 function drawFreshTimerAndPoints() {
-    sgGameBoardTimerPointsCont.innerHTML = drawBoardTimerAndPoints();
+
+    points = roundWon ? gainPoints() : losePoints();   
+    sgPoints.innerText = points;
+}
+
+function fireGameOver() {
+
+    alert("GAME OVER");
+    resetSgHUD()
+    sgPoints.innerText = resetPoints();
+    sgResultChecker.innerText = "-";
 }
 
 function checkRound() {
@@ -214,36 +271,64 @@ function checkRound() {
     //Draw user result
     drawUserResult();
 
-    // compareInput();
+    // Compare user result against instruction
+    compareInput();
 
-    // buildInstruction();
-    // buildComputerInstructionSample();
+    // Draw round result
+    drawResultCheck();
 
-    // drawFreshTimerAndPoints();
+    // Draw next round after 1.5 seconds
+    setTimeout(() => {
 
-    // drawFreshInstruction();
-    // loadJSGeneratedHTMLRes();
-    // drawFreshInstructionSample();
+        // Update points
+        drawFreshTimerAndPoints();
 
-    //
-    // drawUserResult();
+        // Clear game board
+        clearGameBoard();
+
+        // Check if game over
+        if (points <= 0)
+            fireGameOver();
+
+        // Build new instruction and sample
+        buildInstruction();
+        buildComputerInstructionSample();
+
+        // Draw fresh instruction and sample
+        drawFreshInstruction();
+        loadJSGeneratedHTMLRes();
+        drawFreshInstructionSample();
+    }, 1500);
 }
 
 function play() {
 
+    // Hide regular board
+    hideRegularBoard();
+
+    // Show game board base
+    showGameBoard();
+
     // Game switches on
     isGameOn = true;
+
+    // Draw HUD for points and timer
+    drawBoardTimerAndPoints();
+
+    // Draw content board
+    drawBoardContent();
+
+    // Load JS-generated HTML resources
+    loadJSGeneratedHTMLRes();
 
     // Computer builds random instruction with its shape
     buildInstruction();
     buildComputerInstructionSample();
 
-    // Game draws timer and points HUD
-    drawFreshTimerAndPoints();
-
     // Game draws computer's instruction and shape into board   
     drawFreshInstruction();
-    loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
+
+    // Tell the game the computer made her move
     computerPlayed = true;
 }

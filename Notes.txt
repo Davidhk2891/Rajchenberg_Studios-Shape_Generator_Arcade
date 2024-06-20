@@ -3,9 +3,9 @@
     - The prototype is a comparison device. It needs to:
     1 Draw a game instruction - DONE
     2 Wait for user input - DONE
-    3 Read and compare user input + give feedback on result - ON IT
-        - You need to draw what the player built
-    4 Set a timer to 2 seconds
-    5 draw new game instruction
+    3 Read and compare user input + give feedback on result - DONE
+        - You need to draw what the player built - DONE
+    4 Set a timer to 2 seconds - DONE
+    5 draw new game instruction - DONE
     
     Repeat

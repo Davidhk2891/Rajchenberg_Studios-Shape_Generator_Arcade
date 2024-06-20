@@ -2,31 +2,33 @@ let roundWon = false;
 
 function compareInput() {
    
-    if (flipDir == currentInstruction[0] && count == currentInstruction[1]
-     && color == currentInstruction[2] && shape == currentInstruction[3]
-     && char == currentInstruction[4] && charSize == currentInstruction[5]) {
+    if (playerFlipDir == currentInstruction[0] && playerCount == currentInstruction[1]
+     && playerColor == currentInstruction[2] && playerShape == currentInstruction[3]
+     && playerChar == currentInstruction[4] && playerCharSize == currentInstruction[5]) {
  
-         testInput(
-             "Correct. Previous round results:" + "\n" +
-             flipDir + " and " + currentInstruction[0] + "\n" +
-             count + " and " + currentInstruction[1] + "\n" +
-             color + " and " + currentInstruction[2] + "\n" +
-             shape + " and " + currentInstruction[3] + "\n" +
-             char + " and " + currentInstruction[4] + "\n" +
-             charSize + " and " + currentInstruction[5] + "\n"
-         );
+        testInput(
+            "Incorrect. Previous round results:" + "\n" +
+            "----------" + "---Player---" + "|" + "---Computer---" + "\n" +
+            "flip dir---" + playerFlipDir + "--and-" + currentInstruction[0] + "\n" +
+            "rows count-----" + playerCount + "----and-" + currentInstruction[1] + "\n" +
+            "color---------" + playerColor + "---and-" + currentInstruction[2] + "\n" +
+            "shape--------" + playerShape + "-and-" + currentInstruction[3] + "\n" +
+            "char----------" + playerChar + "-----and-" + currentInstruction[4] + "\n" +
+            "char size-----" + playerCharSize + "--and-" + currentInstruction[5] + "\n"
+        );
          roundWon = true;
     } else {
  
-         testInput(
-             "Incorrect. Previous round result:" + "\n" +
-             flipDir + " and " + currentInstruction[0] + "\n" +
-             count + " and " + currentInstruction[1] + "\n" +
-             color + " and " + currentInstruction[2] + "\n" +
-             shape + " and " + currentInstruction[3] + "\n" +
-             char + " and " + currentInstruction[4] + "\n" +
-             charSize + " and " + currentInstruction[5] + "\n"
-         );
+        testInput(
+            "Incorrect. Previous round results:" + "\n" +
+            "----------" + "---Player---" + "|" + "---Computer---" + "\n" +
+            "flip dir---" + playerFlipDir + "--and-" + currentInstruction[0] + "\n" +
+            "rows count-----" + playerCount + "----and-" + currentInstruction[1] + "\n" +
+            "color---------" + playerColor + "---and-" + currentInstruction[2] + "\n" +
+            "shape--------" + playerShape + "-and-" + currentInstruction[3] + "\n" +
+            "char----------" + playerChar + "-----and-" + currentInstruction[4] + "\n" +
+            "char size-----" + playerCharSize + "--and-" + currentInstruction[5] + "\n"
+        );
          roundWon = false;
     }
  }
