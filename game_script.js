@@ -68,21 +68,7 @@ function fillGameShape() {
     return gameRows;
 }
 
-function stackInstructionShape() {
-    clearGameShape();
-    for (const row of fillGameShape()) {
-        gameResult = gameResult + lineBreakType + row;
-    }
-}
-
-function stackPlayerShape() {
-    clearGameShape();
-    for (const row of fillGameShape()) {
-        gameResult = gameResult + lineBreakType + row;
-    }
-}
-
-function printGameShape(lineBreakType) {
+function stackGameShape(lineBreakType) {
 
     clearGameShape();
     for (const row of fillGameShape()) {
@@ -319,12 +305,12 @@ function drawFreshInstruction() {
 }
 
 function drawFreshInstructionSample() {
-    sgInstructionSample.innerHTML = printGameShape("<br>");
+    sgInstructionSample.innerHTML = stackGameShape("<br>");
     clearAllShapeAssets();
 }
 
 function drawUserResult() {
-    sgUserResult.innerText = printGameShape("<br>");
+    sgUserResult.innerText = stackGameShape("<br>");
 }
 
 function drawResultCheck() {
@@ -384,7 +370,7 @@ function checkRound() {
     drawFreshInstruction();
     loadJSGeneratedHTMLRes();
     drawFreshInstructionSample();
-    drawUserResult();
+    // drawUserResult();
 }
 
 function play() {
