@@ -1,10 +1,12 @@
 let points = 0;
 
 function gainPoints() {
+    time = time + 5;
     return points + 10;
 }
 
 function losePoints() {
+    time = time - 2;
     return points - 5;
 }
 

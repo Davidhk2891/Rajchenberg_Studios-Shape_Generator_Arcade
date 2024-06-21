@@ -57,8 +57,8 @@ function drawResultCheck() {
 
     const checkedResult = () => {
         sgResultChecker.innerText = roundWon ?
-        `CORRECT ${String.fromCodePoint(0x2705)} +4 time | +10 points` :
-        `INCORRECT ${String.fromCodePoint(0x274C)} -1 time | -5 points`;
+        `CORRECT ${String.fromCodePoint(0x2705)} +5 time | +10 points` :
+        `INCORRECT ${String.fromCodePoint(0x274C)} -2 time | -5 points`;
     }
 
     setTimeout(checkedResult, 500);
