@@ -5,7 +5,15 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="./styles.css" />
-        <script src="./game_script.js" defer></script>
+        <script src="./utils/logger.js" defer></script>
+        <script src="./game/computer/computer_script.js" defer></script>
+        <script src="./game/computer/instru_script.js" defer></script>
+        <script src="./game/player/player_script.js" defer></script>
+        <script src="./game/round_script.js" defer></script>
+        <script src="./game/player/points_script.js" defer></script>
+        <script src="./game/board_script.js" defer></script>
+        <script src="./game/timer_script.js" defer></script>
+        <script src="./game/game_script.js" defer></script>
         <script src="./script.js" defer></script>
         <title>Shape Generator 15 - The game</title>
     </head>
@@ -46,7 +54,7 @@
                         </div>
                         <div id="sg-char-size-cont" class="sg-feature-cont">
                             <label id="sg-char-size-l" for="sg-char-size">
-                                <input type="number" min="4" max="34" value="12" 
+                                <input type="number" min="4" max="16" value="12" 
                                 id="sg-char-size" class="input-num"/>
                                  Char size
                             </label>
@@ -55,7 +63,7 @@
                     <div id="sg-hud-row-one-inner-two" class="sg-hud-rows inner-rows">
                         <div id="sg-num-rows-cont" class="sg-feature-cont">
                             <label id="sg-num-rows-l" for="sg-num-rows">
-                                <input type="number" min="3" max="30" value="10"
+                                <input type="number" min="3" max="15" value="10"
                                  id="sg-num-rows" class="input-num"/>
                                  # Rows
                             </label>                                
@@ -63,7 +71,7 @@
                         <div id="sg-shape-cont" class="sg=feature-cont">
                             <label id="sg-shape-l" for="sg-shape">
                                 <select id="sg-shape" value="pyrmaid">
-                                    <option value="pyramid">Pyramid</option>
+                                    <option value="pyramid" selected>Pyramid</option>
                                     <option value="square">Square</option>
                                     <option value="line">Line</option>
                                 </select>
@@ -73,7 +81,7 @@
                         <div id="sg-color-cont" class="sg=feature-cont">
                             <label id="sg-color-l" for="sg-color">
                                 <select id="sg-color" value="grey">
-                                    <option value="grey">Grey</option>
+                                    <option value="grey" selected>Grey</option>
                                     <option value="black">Black</option>
                                     <option value="red">Red</option>
                                     <option value="green">Green</option>
@@ -94,7 +102,10 @@
                 </div>
             </div>
             <p id="sg-regular-board">Click on 'Generate' or 'Play' &#128526;</p>
-            <p id="sg-game-board" style="display: none;"></p>
+            <div id="sg-game-board-cont" style="display: none;">
+                <div id="sg-game-board-timer-points-cont"></div>
+                <div id="sg-game-board-content-cont"></div>
+            </div>
         </div>
     </body>
 

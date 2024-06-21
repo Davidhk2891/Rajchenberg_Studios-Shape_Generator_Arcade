@@ -9,16 +9,16 @@ const sgClear = document.querySelector('#sg-clear');
 const sgReset = document.querySelector('#sg-reset');
 const sgPlay =  document.querySelector('#sg-play');
 const sgRegularBoard = document.querySelector('#sg-regular-board');
-const sgGameBoard = document.querySelector('#sg-game-board');
 
-let count = 10;
 let rows = [];
+let count = 10;
 let flip = false;
+let flipDir = "straight";
 let char = "#";
-let charSize = ""
-let result = "";
-let color = "";
+let charSize = "12px";
+let color = "grey";
 let shape = "pyramid";
+let result = "";
 const space = " ";
 
 function makeRow(rowNum) {
@@ -86,7 +86,7 @@ function reset() {
     sgFlip.checked = false;
     char = "#"
     sgChar.value = "#";
-    charSize = "12";
+    charSize = "12px";
     sgCharSize.value = 12;
     count = 10;
     sgNumRows.value = 10;
@@ -95,6 +95,38 @@ function reset() {
     color = "grey";
     sgColor.value = "grey";
     sgRegularBoard.style.color = color;
+    sgRegularBoard.style.fontSize = "16px";
+
+    // Game program
+    computerFlip = false;
+    computerFlipDir = "";
+    computerChar = "";
+    computerCharSize = "";
+    computerColor = "";
+    computerCount = "";
+    computerShape = "";
+    computerResult = "";
+    computerRows = [];
+
+    playerFlip = false;
+    playerFlipDir = "straight";
+    playerChar = "#";
+    playerCharSize = "12px";
+    playerColor = "grey";
+    playerCount = 10;
+    playerShape = "pyramid";
+    playerResult = "";
+    playerRows = [];
+
+    points = 0;
+    isGameOn = false;
+    computerPlayed = false;
+    changePlayBtnColors();
+    showRegularBoard();
+    hideGameBoard();
+    time = timeCeiling;
+    points = 0;
+    clearInterval(timerID);
 }
 
 // Click event listeners
@@ -106,37 +138,82 @@ sgPlay.onclick = play;
 // Other event listeners
 sgFlip.addEventListener('change', function(e) {
 
-    flip = e.target.checked ? true : false;
-    printShapeForFeature();
+    if (e.target.checked) {
+        flip = true;
+        flipDir = "fliped";
+        computerFlip = true;
+        computerFlipDir = "fliped";
+    } else {
+        flip = false;
+        flipDir = "straight";
+        computerFlip = false;
+        computerFlipDir = "straight";
+    }
+
+    if (!isGameOn) 
+        printShapeForFeature();
+
+    if (computerPlayed) {
+        if (e.target.checked) {
+            playerFlip = true;
+            playerFlipDir = "fliped";
+        } else {
+            playerFlip = false;
+            playerFlipDir = "straight";
+        }
+    }
 });
 
 sgChar.addEventListener('change', function(e) {
 
     char = e.target.value;
-    printShapeForFeature();
+    computerChar = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
+    if (computerPlayed)
+        playerChar = e.target.value;
 });
 
 sgCharSize.addEventListener('change', function (e) {
     
-    charSize = e.target.value;
-    sgRegularBoard.style.fontSize = charSize + "px";    
-    printShapeForFeature();
+    charSize = e.target.value + "px";
+    sgRegularBoard.style.fontSize = charSize;  
+    
+    computerCharSize = e.target.value + "px";
+    if (!isGameOn)
+        printShapeForFeature();
+    if (computerPlayed)
+        playerCharSize = e.target.value + "px";
 }); 
 
 sgNumRows.addEventListener('change', function(e) {
 
     count = e.target.value;
-    printShapeForFeature();
+    computerCount = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
+    if (computerPlayed)
+        playerCount = e.target.value;
 });
 
 sgShape.addEventListener('change', function(e) {
 
     shape = e.target.value;
-    printShapeForFeature();
+    computerShape = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
+    if (computerPlayed) 
+        playerShape = e.target.value;
 });
 
 sgColor.addEventListener('change', function(e) {
     
-    sgRegularBoard.style.color = e.target.value;
-    printShapeForFeature()
-    });
+    color = e.target.value;
+    sgRegularBoard.style.color = color;
+
+    computerColor = e.target.value;
+    if (!isGameOn)
+        printShapeForFeature();
+    if (computerPlayed)
+        playerColor = e.target.value;
+});
