@@ -9,3 +9,11 @@
     5 draw new game instruction - DONE
     
     Repeat
+
+The game is finished.
+
+Now let's finish it fast so you can move on with the next item in the list
+
+Add ability to gain 5 seconds if user scores
+
+Add ability to lose 2 seconds if user misses

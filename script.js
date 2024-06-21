@@ -95,6 +95,38 @@ function reset() {
     color = "grey";
     sgColor.value = "grey";
     sgRegularBoard.style.color = color;
+    sgRegularBoard.style.fontSize = "16px";
+
+    // Game program
+    computerFlip = false;
+    computerFlipDir = "";
+    computerChar = "";
+    computerCharSize = "";
+    computerColor = "";
+    computerCount = "";
+    computerShape = "";
+    computerResult = "";
+    computerRows = [];
+
+    playerFlip = false;
+    playerFlipDir = "straight";
+    playerChar = "#";
+    playerCharSize = "12px";
+    playerColor = "grey";
+    playerCount = 10;
+    playerShape = "pyramid";
+    playerResult = "";
+    playerRows = [];
+
+    points = 0;
+    isGameOn = false;
+    computerPlayed = false;
+    changePlayBtnColors();
+    showRegularBoard();
+    hideGameBoard();
+    time = timeCeiling;
+    points = 0;
+    clearInterval(timerID);
 }
 
 // Click event listeners
@@ -113,13 +145,14 @@ sgFlip.addEventListener('change', function(e) {
         computerFlipDir = "fliped";
     } else {
         flip = false;
-        flip = "straight";
+        flipDir = "straight";
         computerFlip = false;
         computerFlipDir = "straight";
     }
-    
-    if (!isGameOn)
+
+    if (!isGameOn) 
         printShapeForFeature();
+
     if (computerPlayed) {
         if (e.target.checked) {
             playerFlip = true;

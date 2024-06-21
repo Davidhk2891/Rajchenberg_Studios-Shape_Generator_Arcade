@@ -5,12 +5,20 @@ const sgGameBoardContentCont = document.querySelector('#sg-game-board-content-co
 let isGameOn = false;
 let computerPlayed = false;
 
+function showRegularBoard() {
+    sgRegularBoard.style.display = "block";
+}
+
 function hideRegularBoard() {
     sgRegularBoard.style.display = "none";
 }
 
 function showGameBoard() {
     sgGameBoardCont.style.display = "block";
+}
+
+function hideGameBoard() {
+    sgGameBoardCont.style.display = "none";
 }
 
 function drawTimerAndPointsBoard() {
@@ -81,16 +89,31 @@ function clearGameBoard() {
 
 function fireGameOver() {
 
-    alert("GAME OVER");
     resetSgHUD()
     sgPoints.innerText = resetPoints();
-    sgTimer.innerText = resetTimer();
+    clearInterval(timerID);
+    time = timeCeiling;
+    sgTimer.innerText = "00";
     sgResultChecker.innerText = "-";
+    var result = confirm("GAME OVER\n\nPlay again?");
+    if (result) {
+        play();
+    }
 }
 
 function startGameTimer() {
-    startTimer();
-    sgTimer.innerText = 
+    startTimer(sgTimer);
+    // sgTimer.innerText = 
+}
+
+function changePlayBtnColors() {
+    if (isGameOn) {
+        sgPlay.style.color = "white";
+        sgPlay.style.backgroundColor = "red";
+    } else {
+        sgPlay.style.color = "black";
+        sgPlay.style.backgroundColor = "#E9E9ED";
+    }
 }
 
 function checkRound() {
@@ -138,6 +161,9 @@ function play() {
 
     // Game switches on
     isGameOn = true;
+
+    // Change Play button colors
+    changePlayBtnColors();
 
     // Draw HUD for points and timer
     drawTimerAndPointsBoard();

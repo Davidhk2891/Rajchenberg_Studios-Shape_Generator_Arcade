@@ -7,7 +7,7 @@ let playerCount = 10;
 let playerShape = "pyramid";
 let playerResult = "";
 let playerRows = [];
-let playerSpace = " ";
+const playerSpace = " ";
 
 function makePlayerRow(rowNum) {
 
